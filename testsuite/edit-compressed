@@ -1,0 +1,18 @@
+#!/usr/bin/python3
+
+import os
+import sys
+import tempfile
+import zlib
+
+input_name = sys.argv[1]
+data = zlib.decompress(open(input_name, "rb").read())
+(tmp, tmp_name) = tempfile.mkstemp()
+try:
+    with open(tmp_name, "wb") as tmp:
+        tmp.write(data)
+    os.system("editor " + tmp_name)
+    data = zlib.compress(open(tmp_name, "rb").read(), 9)
+    open(input_name, "wb+").write(data)
+finally:
+    os.unlink(tmp_name)
